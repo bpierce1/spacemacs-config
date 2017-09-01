@@ -14,6 +14,11 @@ Starts a fzf session.
 
 \(fn)" t nil)
 
+(autoload 'fzf-reindex "fzf" "\
+Starts a fzf session and reindex.
+
+\(fn)" t nil)
+
 (autoload 'fzf-directory "fzf" "\
 Starts a fzf session at the specified directory.
 
