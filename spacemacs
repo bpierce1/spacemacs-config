@@ -41,7 +41,7 @@ values."
                       auto-completion-return-key-behavior 'complete
                       auto-completion-tab-key-behavior 'cycle
                       auto-completion-complete-with-key-sequence nil
-                      auto-completion-complete-with-key-sequence-delay 0.1
+                      auto-completion-complete-with-key-sequence-delay 2.0
                       auto-completion-private-snippets-directory nil)
      better-defaults
      emacs-lisp
@@ -311,6 +311,9 @@ executes.
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
   (setq exec-path-from-shell-check-startup-files nil)
+  (defun evilmi-customize-keybinding ()
+    (evil-define-key 'normal evil-matchit-mode-map
+      "^" 'evilmi-jump-items))
   )
 
 (defun dotspacemacs/user-config ()
@@ -330,17 +333,26 @@ you should place your code here."
         scroll-preserve-screen-position 1)
 
   ;; evil config
+  (define-key evil-normal-state-map (kbd "C-i") nil)
+  (define-key evil-normal-state-map (kbd "C-o") nil)
   (define-key evil-insert-state-map (kbd "C-S-V") 'yank) ;; paste with ctrl-shift-v
+  (define-key evil-normal-state-map (kbd "C-S-P") 'projectile-switch-project)
   (define-key evil-normal-state-map (kbd "C-p") 'fzf)
   (define-key evil-normal-state-map (kbd "M-p") 'fzf-reindex)
   (define-key evil-normal-state-map (kbd "C-'") 'helm-recentf)
   (define-key evil-normal-state-map (kbd "C-;") 'helm-buffers-list)
   (define-key evil-normal-state-map (kbd "C-{") 'projectile-ripgrep)
+  (global-set-key (kbd "C-S-P") 'projectile-switch-project)
   (global-set-key (kbd "C-p") 'fzf)
   (global-set-key (kbd "M-p") 'fzf-reindex)
   (global-set-key (kbd "C-'") 'helm-recentf)
   (global-set-key (kbd "C-;") 'helm-buffers-list)
   (global-set-key (kbd "C-{") 'projectile-ripgrep)
+  (define-key evil-normal-state-map (kbd "C-i") 'eyebrowse-prev-window-config)
+  (define-key evil-normal-state-map (kbd "C-o") 'eyebrowse-next-window-config)
+  (define-key evil-normal-state-map (kbd "C-S-T") 'eyebrowse-create-window-config)
+  (define-key evil-normal-state-map (kbd "C-S-W") 'eyebrowse-close-window-config)
+  (define-key evil-normal-state-map (kbd "%") 'evilmi--simple-jump)
 
   ;; for org mode overrides
   (define-key evil-normal-state-map "\C-k" 'windmove-up)
@@ -352,6 +364,18 @@ you should place your code here."
   (setq helm-ag-base-command "rg --no-heading")
   (setq helm-grep-ag-command "rg --color=always --colors 'match:fg:black' --colors 'match:bg:yellow' --smart-case --no-heading --line-number %s %s %s")
   (setq helm-grep-ag-pipe-cmd-switches '("--colors 'match:fg:black'" "--colors 'match:bg:yellow'"))
+  (with-eval-after-load 'helm-buffers
+    (add-to-list 'helm-boring-buffer-regexp-list "\*scratch\*")
+    (add-to-list 'helm-boring-buffer-regexp-list "\*Messages\*")
+    (add-to-list 'helm-boring-buffer-regexp-list "\*spacemacs\*")
+    (add-to-list 'helm-boring-buffer-regexp-list "GNU Emacs"))
+
+  ;; autocomplete
+  (add-hook 'company-mode-hook
+            (lambda()
+              (define-key evil-normal-state-map (kbd "<tab>") 'company-complete)))
+  (setq company-idle-delay nil)
+
 
   ;; projectile
   (setq projectile-enable-caching t)
@@ -364,6 +388,12 @@ you should place your code here."
   (global-set-key (kbd "C-i") 'eyebrowse-prev-window-config)
   (global-set-key (kbd "C-o") 'eyebrowse-next-window-config)
   (global-set-key (kbd "C-S-T") 'eyebrowse-create-window-config)
+  (global-set-key (kbd "C-S-W") 'eyebrowse-close-window-config)
+
+  ;; no 
+  (setq undo-tree-auto-save-history nil)
+
+  (global-evil-matchit-mode t)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -394,7 +424,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (yapfify stickyfunc-enhance pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc helm-gtags helm-cscope xcscope ggtags cython-mode company-anaconda anaconda-mode pythonic xterm-color unfill smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (tabbar xterm-color unfill smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
