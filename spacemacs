@@ -332,10 +332,12 @@ you should place your code here."
   ;; evil config
   (define-key evil-insert-state-map (kbd "C-S-V") 'yank) ;; paste with ctrl-shift-v
   (define-key evil-normal-state-map (kbd "C-p") 'fzf)
+  (define-key evil-normal-state-map (kbd "M-p") 'fzf-reindex)
   (define-key evil-normal-state-map (kbd "C-'") 'helm-recentf)
   (define-key evil-normal-state-map (kbd "C-;") 'helm-buffers-list)
   (define-key evil-normal-state-map (kbd "C-{") 'projectile-ripgrep)
   (global-set-key (kbd "C-p") 'fzf)
+  (global-set-key (kbd "M-p") 'fzf-reindex)
   (global-set-key (kbd "C-'") 'helm-recentf)
   (global-set-key (kbd "C-;") 'helm-buffers-list)
   (global-set-key (kbd "C-{") 'projectile-ripgrep)
