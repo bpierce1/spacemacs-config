@@ -417,10 +417,15 @@ you should place your code here."
     (define-key evil-normal-state-map (kbd "TAB") nil))
 
   ;; org mode
-  (with-eval-after-load 'evil-org
+  (with-eval-after-load 'org
     (setq org-todo-keywords
-      '((sequence "TODO" "STRT" "|" "DONE")))
+          '((sequence "TODO" "STRT" "|" "DONE")))
+    (setq org-startup-indented t)
     (org-indent-mode t)
+    (setq org-directory "/dhome/bpierce/shared/org")
+    (setq org-default-notes-file (concat org-directory "/capture.org")))
+
+  (with-eval-after-load 'evil-org
     ;; zoom/unzoom
     (define-key evil-org-mode-map (kbd "<normal-state> ]") 'org-narrow-to-subtree)
     (define-key evil-org-mode-map (kbd "<normal-state> [") 'widen)
@@ -438,9 +443,7 @@ you should place your code here."
     (define-key evil-org-mode-map (kbd "<normal-state> t") 'org-todo)
     (define-key evil-org-mode-map (kbd "<normal-state> T") 'org-shiftleft)
     ;; fix tab
-    (define-key evil-org-mode-map (kbd "<normal-state> C-y") 'yank)
-    (setq org-directory "/dhome/bpierce/shared/org")
-    (setq org-default-notes-file (concat org-directory "/capture.org")))
+    (define-key evil-org-mode-map (kbd "<normal-state> C-y") 'yank))
 
 
 
