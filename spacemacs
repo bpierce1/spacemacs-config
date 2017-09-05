@@ -417,7 +417,7 @@ you should place your code here."
     (define-key evil-normal-state-map (kbd "TAB") nil))
 
   ;; org mode
-  (with-eval-after-load 'org
+  (with-eval-after-load 'evil-org
     (setq org-todo-keywords
       '((sequence "TODO" "STRT" "|" "DONE")))
     (org-indent-mode t)
