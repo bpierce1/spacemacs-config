@@ -432,7 +432,10 @@ you should place your code here."
           '((sequence "TODO" "STRT" "|" "DONE")))
     (setq org-startup-indented t)
     (org-indent-mode t)
-    (setq org-directory "/dhome/bpierce/shared/org")
+    ;; laptop
+    (if (eq system-type 'darwin) (setq org-directory "/dhome/bpierce/shared/org"))
+    (if (eq system-type 'gnu/linux) (setq org-directory "~/shared/org"))
+
     (setq org-default-notes-file (concat org-directory "/capture.org")))
 
   (with-eval-after-load 'evil-org
