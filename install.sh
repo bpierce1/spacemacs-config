@@ -7,7 +7,5 @@ cd ~/.emacs.d
 git checkout develop
 git pull --rebase origin develop
 cd -
-cp $DIR/spacemacs ~/.spacemacs
-cp -r $DIR/private/* ~/.emacs.d/private/
 mkdir -p ~/bin
 cp $DIR/fzf_with_caching.sh ~/bin/

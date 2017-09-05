@@ -27,7 +27,7 @@ values."
    ;; If non-nil layers with lazy install support are lazy installed.
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
-   dotspacemacs-configuration-layer-path '()
+   dotspacemacs-configuration-layer-path '("~/.spacemacs.d/private")
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(python
@@ -357,19 +357,29 @@ you should place your code here."
   (define-key evil-normal-state-map (kbd "C-j") 'windmove-down)
   (define-key evil-normal-state-map (kbd "C-h") 'windmove-left)
   (define-key evil-normal-state-map (kbd "C-l") 'windmove-right)
+  (define-key evil-normal-state-map (kbd "C-f") 'helm-find-files)
 
   ;; for some reason have to repeat these... :(
+  (define-key evil-insert-state-map (kbd "C-S-V") 'yank) ;; paste with ctrl-shift-v
   (global-set-key (kbd "C-S-P") 'projectile-switch-project)
+  (global-set-key (kbd "M-[") 'projectile-add-known-project)
+  (global-set-key (kbd "C-{") 'projectile-ripgrep)
+  (global-set-key (kbd "C-S-I") 'projectile-find-other-file)
+  (global-set-key (kbd "C-S-O") 'projectile-find-other-file)
   (global-set-key (kbd "C-p") 'fzf)
   (global-set-key (kbd "M-p") 'fzf-reindex)
   (global-set-key (kbd "C-'") 'helm-recentf)
   (global-set-key (kbd "C-;") 'helm-buffers-list)
-  (global-set-key (kbd "C-{") 'projectile-ripgrep)
   (global-set-key (kbd "<C-i>") 'eyebrowse-prev-window-config)
   (global-set-key (kbd "C-o") 'eyebrowse-next-window-config)
   (global-set-key (kbd "C-S-T") 'eyebrowse-create-window-config)
   (global-set-key (kbd "C-S-W") 'eyebrowse-close-window-config)
   (global-set-key (kbd "%") 'evilmi--simple-jump)
+  (global-set-key (kbd "C-k") 'windmove-up)
+  (global-set-key (kbd "C-j") 'windmove-down)
+  (global-set-key (kbd "C-h") 'windmove-left)
+  (global-set-key (kbd "C-l") 'windmove-right)
+  (global-set-key (kbd "C-f") 'helm-find-files)
 
   ;; comments
   (define-key evil-normal-state-map (kbd "C-/") 'evilnc-comment-operator)
