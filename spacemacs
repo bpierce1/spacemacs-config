@@ -55,7 +55,7 @@ values."
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
-     spell-checking
+     (spell-checking :variables spell-checking-enable-by-default nil)
      syntax-checking
      version-control
      fzf
@@ -326,6 +326,9 @@ you should place your code here."
   ;; mac keys
   (setq mac-command-modifier 'control)
 
+  ;; c-i not as tab
+  (define-key input-decode-map [?\C-i] [C-i])
+
   ;; scrolling
   (setq smooth-scroll-margin 10)
   (setq scroll-margin 10
@@ -337,44 +340,107 @@ you should place your code here."
   (define-key evil-normal-state-map (kbd "C-o") nil)
   (define-key evil-insert-state-map (kbd "C-S-V") 'yank) ;; paste with ctrl-shift-v
   (define-key evil-normal-state-map (kbd "C-S-P") 'projectile-switch-project)
+  (define-key evil-normal-state-map (kbd "C-{") 'projectile-ripgrep)
+  (define-key evil-normal-state-map (kbd "C-S-I") 'projectile-find-other-file)
+  (define-key evil-normal-state-map (kbd "C-S-O") 'projectile-find-other-file)
   (define-key evil-normal-state-map (kbd "C-p") 'fzf)
   (define-key evil-normal-state-map (kbd "M-p") 'fzf-reindex)
   (define-key evil-normal-state-map (kbd "C-'") 'helm-recentf)
   (define-key evil-normal-state-map (kbd "C-;") 'helm-buffers-list)
-  (define-key evil-normal-state-map (kbd "C-{") 'projectile-ripgrep)
+  (define-key evil-normal-state-map (kbd "<C-i>") 'eyebrowse-prev-window-config)
+  (define-key evil-normal-state-map (kbd "C-o") 'eyebrowse-next-window-config)
+  (define-key evil-normal-state-map (kbd "C-S-T") 'eyebrowse-create-window-config)
+  (define-key evil-normal-state-map (kbd "C-S-W") 'eyebrowse-close-window-config)
+  (define-key evil-normal-state-map (kbd "%") 'evilmi--simple-jump)
+  (define-key evil-normal-state-map "\C-k" 'windmove-up)
+  (define-key evil-normal-state-map "\C-j" 'windmove-down)
+  (define-key evil-normal-state-map "\C-h" 'windmove-left)
+  (define-key evil-normal-state-map "\C-l" 'windmove-right)
+
+  ;; for some reason have to repeat these... :(
   (global-set-key (kbd "C-S-P") 'projectile-switch-project)
   (global-set-key (kbd "C-p") 'fzf)
   (global-set-key (kbd "M-p") 'fzf-reindex)
   (global-set-key (kbd "C-'") 'helm-recentf)
   (global-set-key (kbd "C-;") 'helm-buffers-list)
   (global-set-key (kbd "C-{") 'projectile-ripgrep)
-  (define-key evil-normal-state-map (kbd "C-i") 'eyebrowse-prev-window-config)
-  (define-key evil-normal-state-map (kbd "C-o") 'eyebrowse-next-window-config)
-  (define-key evil-normal-state-map (kbd "C-S-T") 'eyebrowse-create-window-config)
-  (define-key evil-normal-state-map (kbd "C-S-W") 'eyebrowse-close-window-config)
-  (define-key evil-normal-state-map (kbd "%") 'evilmi--simple-jump)
+  (global-set-key (kbd "<C-i>") 'eyebrowse-prev-window-config)
+  (global-set-key (kbd "C-o") 'eyebrowse-next-window-config)
+  (global-set-key (kbd "C-S-T") 'eyebrowse-create-window-config)
+  (global-set-key (kbd "C-S-W") 'eyebrowse-close-window-config)
+  (global-set-key (kbd "%") 'evilmi--simple-jump)
 
-  ;; for org mode overrides
-  (define-key evil-normal-state-map "\C-k" 'windmove-up)
-  (define-key evil-normal-state-map "\C-j" 'windmove-down)
-  (define-key evil-normal-state-map "\C-h" 'windmove-left)
-  (define-key evil-normal-state-map "\C-l" 'windmove-right)
+  ;; comments
+  (define-key evil-normal-state-map (kbd "C-/") 'evilnc-comment-operator)
+  (define-key evil-visual-state-map (kbd "C-/") 'evilnc-comment-operator)
+
 
   ;; helm config
   (setq helm-ag-base-command "rg --no-heading")
   (setq helm-grep-ag-command "rg --color=always --colors 'match:fg:black' --colors 'match:bg:yellow' --smart-case --no-heading --line-number %s %s %s")
   (setq helm-grep-ag-pipe-cmd-switches '("--colors 'match:fg:black'" "--colors 'match:bg:yellow'"))
   (with-eval-after-load 'helm-buffers
+    (add-to-list 'helm-boring-buffer-regexp-list "\*anaconda-mode\*")
     (add-to-list 'helm-boring-buffer-regexp-list "\*scratch\*")
     (add-to-list 'helm-boring-buffer-regexp-list "\*Messages\*")
     (add-to-list 'helm-boring-buffer-regexp-list "\*spacemacs\*")
     (add-to-list 'helm-boring-buffer-regexp-list "GNU Emacs"))
 
+  ;;(defalias 'e 'helm-find-files)
+
   ;; autocomplete
   (add-hook 'company-mode-hook
             (lambda()
-              (define-key evil-normal-state-map (kbd "<tab>") 'company-complete)))
+              (define-key evil-insert-state-map (kbd "<tab>") 'company-complete)))
   (setq company-idle-delay nil)
+
+  ;; Info mode
+  (define-key Info-mode-map "g" nil)
+  (define-key Info-mode-map "e" nil)
+  (define-key Info-mode-map "n" nil)
+  (define-key Info-mode-map "C-j" nil)
+  (define-key Info-mode-map "C-k" nil)
+  (define-key Info-mode-map (kbd "<C-i>") 'eyebrowse-prev-window-config)
+  (define-key Info-mode-map (kbd "C-o") 'eyebrowse-next-window-config)
+  (define-key Info-mode-map (kbd "<C-h>") nil)
+  (define-key Info-mode-map (kbd "<C-l>") nil)
+  (define-key Info-mode-map "[" 'Info-prev)
+  (define-key Info-mode-map "]" 'Info-next)
+  (define-key Info-mode-map (kbd "C-k") 'windmove-up)
+  (define-key Info-mode-map (kbd "C-j") 'windmove-down)
+  (define-key Info-mode-map (kbd "C-h") 'windmove-left)
+  (define-key Info-mode-map (kbd "C-l") 'windmove-right)
+  ;; get rid of <tab> being eyebrowse-next-window-config
+  (with-eval-after-load 'eyebrowse
+    (global-set-key (kbd "TAB") nil)
+    (define-key evil-normal-state-map (kbd "TAB") nil))
+
+  ;; org mode
+  (with-eval-after-load 'org
+    (setq org-todo-keywords
+      '((sequence "TODO" "STRT" "|" "DONE")))
+    (org-indent-mode t)
+    ;; zoom/unzoom
+    (define-key evil-org-mode-map (kbd "<normal-state> ]") 'org-narrow-to-subtree)
+    (define-key evil-org-mode-map (kbd "<normal-state> [") 'widen)
+    ;; folding
+    (define-key evil-org-mode-map (kbd "<normal-state> zv") 'org-cycle)
+    ;; promote/demote
+    ;;(define-key org-mode-map (kbd "<tab>") nil)
+    ;;(define-key org-mode-map (kbd "<S-tab>") nil)
+    ;;(define-key evil-org-mode-map (kbd "C-'") nil) ;; ??
+    (define-key evil-org-mode-map (kbd "<normal-state> C-S-k") 'org-move-subtree-up)
+    (define-key evil-org-mode-map (kbd "<normal-state> C-S-j") 'org-move-subtree-down)
+    (define-key evil-org-mode-map (kbd "<normal-state> C-S-l") 'org-demote-subtree)
+    (define-key evil-org-mode-map (kbd "<normal-state> C-S-h") 'org-promote-subtree)
+    ;; todo
+    (define-key evil-org-mode-map (kbd "<normal-state> t") 'org-todo)
+    (define-key evil-org-mode-map (kbd "<normal-state> T") 'org-shiftleft)
+    ;; fix tab
+    (define-key evil-org-mode-map (kbd "<normal-state> C-y") 'yank)
+    (setq org-directory "/dhome/bpierce/shared/org")
+    (setq org-default-notes-file (concat org-directory "/capture.org")))
+
 
 
   ;; projectile
@@ -384,13 +450,7 @@ you should place your code here."
   ;; get help back
   (global-set-key (kbd "C-c h") help-map)
 
-  ;; eyebrowse
-  (global-set-key (kbd "C-i") 'eyebrowse-prev-window-config)
-  (global-set-key (kbd "C-o") 'eyebrowse-next-window-config)
-  (global-set-key (kbd "C-S-T") 'eyebrowse-create-window-config)
-  (global-set-key (kbd "C-S-W") 'eyebrowse-close-window-config)
-
-  ;; no 
+  ;; no history
   (setq undo-tree-auto-save-history nil)
 
   (global-evil-matchit-mode t)
@@ -422,9 +482,12 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-agenda-files
+   (quote
+    ("/dhome/bpierce/shared/org/projects/voxflow.org" "/dhome/bpierce/shared/org/emacs-todo.org")))
  '(package-selected-packages
    (quote
-    (tabbar xterm-color unfill smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (xterm-color unfill smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
