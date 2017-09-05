@@ -95,7 +95,7 @@ values."
    ;; (default t)
    dotspacemacs-elpa-https t
    ;; Maximum allowed time in seconds to contact an ELPA repository.
-   dotspacemacs-elpa-timeout 5
+   dotspacemacs-elpa-timeout 1
    ;; If non nil then spacemacs will check for updates at startup
    ;; when the current branch is not `develop'. Note that checking for
    ;; new versions works via git commands, thus it calls GitHub services
@@ -127,7 +127,7 @@ values."
    ;; `recents' `bookmarks' `projects' `agenda' `todos'."
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
-   dotspacemacs-startup-lists '((recents . 5)
+   dotspacemacs-startup-lists '((recents . 7)
                                 (projects . 7))
    ;; True if the home buffer should respond to resize events.
    dotspacemacs-startup-buffer-responsive t
@@ -269,7 +269,7 @@ values."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers t
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -340,6 +340,7 @@ you should place your code here."
   (define-key evil-normal-state-map (kbd "C-o") nil)
   (define-key evil-insert-state-map (kbd "C-S-V") 'yank) ;; paste with ctrl-shift-v
   (define-key evil-normal-state-map (kbd "C-S-P") 'projectile-switch-project)
+  (define-key evil-normal-state-map (kbd "M-[") 'projectile-add-known-project)
   (define-key evil-normal-state-map (kbd "C-{") 'projectile-ripgrep)
   (define-key evil-normal-state-map (kbd "C-S-I") 'projectile-find-other-file)
   (define-key evil-normal-state-map (kbd "C-S-O") 'projectile-find-other-file)
@@ -352,10 +353,10 @@ you should place your code here."
   (define-key evil-normal-state-map (kbd "C-S-T") 'eyebrowse-create-window-config)
   (define-key evil-normal-state-map (kbd "C-S-W") 'eyebrowse-close-window-config)
   (define-key evil-normal-state-map (kbd "%") 'evilmi--simple-jump)
-  (define-key evil-normal-state-map "\C-k" 'windmove-up)
-  (define-key evil-normal-state-map "\C-j" 'windmove-down)
-  (define-key evil-normal-state-map "\C-h" 'windmove-left)
-  (define-key evil-normal-state-map "\C-l" 'windmove-right)
+  (define-key evil-normal-state-map (kbd "C-k") 'windmove-up)
+  (define-key evil-normal-state-map (kbd "C-j") 'windmove-down)
+  (define-key evil-normal-state-map (kbd "C-h") 'windmove-left)
+  (define-key evil-normal-state-map (kbd "C-l") 'windmove-right)
 
   ;; for some reason have to repeat these... :(
   (global-set-key (kbd "C-S-P") 'projectile-switch-project)
