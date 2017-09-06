@@ -419,11 +419,13 @@ you should place your code here."
     (define-key evil-normal-state-map (kbd "C-h") 'windmove-left)
     (define-key evil-normal-state-map (kbd "C-l") 'windmove-right)
     (define-key evil-normal-state-map (kbd "C-f") 'helm-find-files)
-    (define-key evil-normal-state-map (kbd "C-n") 'neotree-toggle)
     (define-key evil-normal-state-map (kbd "C-.") 'python-indent-shift-right)
     (define-key evil-normal-state-map (kbd "C-<") 'python-indent-shift-left)
     (define-key evil-insert-state-map (kbd "C-.") 'python-indent-shift-right)
     (define-key evil-insert-state-map (kbd "C-<") 'python-indent-shift-left)
+    (define-key evil-insert-state-map (kbd "C-`") 'other-frame)
+    (define-key evil-normal-state-map (kbd "C-n") 'neotree-toggle)
+    (define-key evil-normal-state-map (kbd "C-S-v") 'evil-window-vsplit)
 
     ;; for some reason have to repeat these... :(
     (define-key evil-insert-state-map (kbd "C-S-V") 'yank) ;; paste with ctrl-shift-v
@@ -446,7 +448,14 @@ you should place your code here."
     (global-set-key (kbd "C-h") 'windmove-left)
     (global-set-key (kbd "C-l") 'windmove-right)
     (global-set-key (kbd "C-f") 'helm-find-files)
+    (global-set-key (kbd "C-.") 'python-indent-shift-right)
+    (global-set-key (kbd "C-<") 'python-indent-shift-left)
+    (global-set-key (kbd "C-`") 'other-frame)
     (global-set-key (kbd "C-n") 'neotree-toggle)
+    (global-set-key (kbd "C-S-v") 'evil-window-vsplit)
+
+    (with-eval-after-load 'neotree
+      (evil-define-key 'evilified neotree-mode-map (kbd "C-n") 'neotree-toggle))
 
     ;; comments
     (define-key evil-normal-state-map (kbd "C-/") 'evilnc-comment-operator)
@@ -530,6 +539,7 @@ you should place your code here."
 
     ;; projectile
     (setq projectile-enable-caching t)
+    (setq projectile-file-exists-local-cache-expire (* 5 60))
     (projectile-global-mode)
 
     ;; get help back
