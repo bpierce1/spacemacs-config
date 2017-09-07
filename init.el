@@ -396,6 +396,16 @@ you should place your code here."
         scroll-conservatively 100000
         scroll-preserve-screen-position 1)
 
+    ;; underscores as words
+    ;; For python
+    (add-hook 'python-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
+    ;; For ruby
+    (add-hook 'ruby-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
+    ;; For Javascript
+    (add-hook 'js2-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
+    ;; For C/c++
+    (add-hook 'c++-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
+
     ;; evil config
     (define-key evil-normal-state-map (kbd "C-i") nil)
     (define-key evil-normal-state-map (kbd "C-o") nil)
