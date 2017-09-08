@@ -53,9 +53,9 @@ values."
              git
              markdown
              org
-             (shell :variables
-                 shell-default-height 30
-                 shell-default-position 'bottom)
+             ;;(shell :variables
+             ;;    shell-default-height 30
+             ;;    shell-default-position 'bottom)
              (spell-checking :variables spell-checking-enable-by-default nil)
              syntax-checking
              version-control
@@ -471,6 +471,12 @@ you should place your code here."
     (global-set-key (kbd "C-`") 'other-frame)
     (global-set-key (kbd "C-n") 'neotree-toggle)
     (global-set-key (kbd "C-S-v") 'evil-window-vsplit)
+
+    (with-eval-after-load 'org
+      (evil-define-key 'evilified org-mode-map (kbd "C-k") 'windmove-up)
+      (evil-define-key 'evilified org-mode-map (kbd "C-j") 'windmove-down)
+      (evil-define-key 'evilified org-mode-map (kbd "C-h") 'windmove-left)
+      (evil-define-key 'evilified org-mode-map (kbd "C-l") 'right))
 
     (with-eval-after-load 'neotree
       (evil-define-key 'evilified neotree-mode-map (kbd "C-n") 'neotree-toggle))
