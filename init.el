@@ -65,7 +65,7 @@ values."
         ;; wrapped in a layer. If you need some configuration for these
         ;; packages, then consider creating a layer. You can also put the
         ;; configuration in `dotspacemacs/user-config'.
-        dotspacemacs-additional-packages '(smooth-scrolling ripgrep projectile-ripgrep dired+ cff)
+        dotspacemacs-additional-packages '(smooth-scrolling ripgrep dired+ cff)
         ;; A list of packages that cannot be updated.
         dotspacemacs-frozen-packages '()
         ;; A list of packages that will not be installed and loaded.
@@ -416,7 +416,7 @@ you should place your code here."
     (define-key evil-insert-state-map (kbd "C-S-V") 'yank) ;; paste with ctrl-shift-v
     (define-key evil-normal-state-map (kbd "C-S-P") 'projectile-switch-project)
     (define-key evil-normal-state-map (kbd "M-[") 'projectile-add-known-project)
-    (define-key evil-normal-state-map (kbd "C-{") 'projectile-ripgrep)
+    (define-key evil-normal-state-map (kbd "C-{") 'helm-projectile-ag)
     (define-key evil-normal-state-map (kbd "C-S-I") 'projectile-find-other-file)
     (define-key evil-normal-state-map (kbd "C-S-O") 'projectile-find-other-file)
     (define-key evil-normal-state-map (kbd "C-p") 'projectile-find-file)
@@ -447,7 +447,7 @@ you should place your code here."
     (define-key evil-insert-state-map (kbd "C-S-V") 'yank) ;; paste with ctrl-shift-v
     (global-set-key (kbd "C-S-P") 'projectile-switch-project)
     (global-set-key (kbd "M-[") 'projectile-add-known-project)
-    (global-set-key (kbd "C-{") 'projectile-ripgrep)
+    (global-set-key (kbd "C-{") 'helm-projectile-ag)
     (global-set-key (kbd "C-S-I") 'projectile-find-other-file)
     (global-set-key (kbd "C-S-O") 'projectile-find-other-file)
     (global-set-key (kbd "C-p") 'projectile-find-file)
@@ -481,8 +481,8 @@ you should place your code here."
 
 
     ;; helm config
-    (setq helm-ag-base-command "rg --no-heading")
-    (setq helm-grep-ag-command "rg --color=always --colors 'match:fg:black' --colors 'match:bg:yellow' --smart-case --no-heading --line-number %s %s %s")
+    ;;(setq helm-ag-base-command "rg --color=never --smart-case --no-heading") ;; doesn't work right now :(
+    ;;(setq helm-grep-ag-command "rg --color=always --colors 'match:fg:black' --colors 'match:bg:yellow' --smart-case --no-heading --line-number %s %s %s")
     (setq helm-grep-ag-pipe-cmd-switches '("--colors 'match:fg:black'" "--colors 'match:bg:yellow'"))
     (with-eval-after-load 'helm-buffers
         (add-to-list 'helm-boring-buffer-regexp-list "\*anaconda-mode\*")
