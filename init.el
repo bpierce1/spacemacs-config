@@ -30,7 +30,8 @@ values."
         dotspacemacs-configuration-layer-path '("~/.spacemacs.d/private")
         ;; List of configuration layers to load.
         dotspacemacs-configuration-layers
-        '((python :variables python-enable-yapf-format-on-save t)
+        '(yaml
+          (python :variables python-enable-yapf-format-on-save t)
              ;; ----------------------------------------------------------------
              ;; Example of useful layers you may want to use right away.
              ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -64,7 +65,7 @@ values."
         ;; wrapped in a layer. If you need some configuration for these
         ;; packages, then consider creating a layer. You can also put the
         ;; configuration in `dotspacemacs/user-config'.
-        dotspacemacs-additional-packages '(smooth-scrolling ripgrep projectile-ripgrep dired+)
+        dotspacemacs-additional-packages '(smooth-scrolling ripgrep projectile-ripgrep dired+ cff)
         ;; A list of packages that cannot be updated.
         dotspacemacs-frozen-packages '()
         ;; A list of packages that will not be installed and loaded.
@@ -315,7 +316,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
         (evil-define-key 'normal evil-matchit-mode-map
             "^" 'evilmi-jump-items))
 
-    (spaceline-toggle-projectile-root-on)
+    ;;(spaceline-toggle-projectile-root-on)
 
     (defun set-indent (n)
         (setq-default
@@ -387,6 +388,9 @@ you should place your code here."
     ;; mac keys
     (setq mac-command-modifier 'control)
 
+    ;; tramp speedup
+    (setq tramp-default-method "ssh")
+
     ;; c-i not as tab
     ;; (define-key input-decode-map [?\C-i] [C-i])
 
@@ -415,8 +419,10 @@ you should place your code here."
     (define-key evil-normal-state-map (kbd "C-{") 'projectile-ripgrep)
     (define-key evil-normal-state-map (kbd "C-S-I") 'projectile-find-other-file)
     (define-key evil-normal-state-map (kbd "C-S-O") 'projectile-find-other-file)
-    (define-key evil-normal-state-map (kbd "C-p") 'fzf)
-    (define-key evil-normal-state-map (kbd "M-p") 'fzf-reindex)
+    (define-key evil-normal-state-map (kbd "C-p") 'projectile-find-file)
+    (define-key evil-normal-state-map (kbd "M-p") 'projectile-invalidate-cache)
+    ;;(define-key evil-normal-state-map (kbd "C-p") 'fzf-git)
+    ;;(define-key evil-normal-state-map (kbd "M-p") 'fzf-git-reindex)
     (define-key evil-normal-state-map (kbd "C-'") 'helm-recentf)
     (define-key evil-normal-state-map (kbd "C-;") 'helm-buffers-list)
     (define-key evil-normal-state-map (kbd "<C-i>") 'eyebrowse-prev-window-config)
@@ -444,8 +450,10 @@ you should place your code here."
     (global-set-key (kbd "C-{") 'projectile-ripgrep)
     (global-set-key (kbd "C-S-I") 'projectile-find-other-file)
     (global-set-key (kbd "C-S-O") 'projectile-find-other-file)
-    (global-set-key (kbd "C-p") 'fzf)
-    (global-set-key (kbd "M-p") 'fzf-reindex)
+    (global-set-key (kbd "C-p") 'projectile-find-file)
+    (global-set-key (kbd "M-p") 'projectile-invalidate-cache)
+    ;;(global-set-key (kbd "C-p") 'fzf-git)
+    ;;(global-set-key (kbd "M-p") 'fzf-git-reindex)
     (global-set-key (kbd "C-'") 'helm-recentf)
     (global-set-key (kbd "C-;") 'helm-buffers-list)
     (global-set-key (kbd "<C-i>") 'eyebrowse-prev-window-config)
@@ -549,7 +557,7 @@ you should place your code here."
 
     ;; projectile
     (setq projectile-enable-caching t)
-    (setq projectile-file-exists-local-cache-expire (* 5 60))
+    ;;(setq projectile-file-exists-local-cache-expire (* 5 60))
     (projectile-global-mode)
 
     ;; get help back
@@ -559,6 +567,15 @@ you should place your code here."
     (setq undo-tree-auto-save-history nil)
 
     (global-evil-matchit-mode t)
+
+    ;; changing to hpp
+    ;;(add-hook 'c++-mode-hook
+    ;;   '(lambda ()
+    ;;       (define-key c-mode-base-map (kbd "C-S-o") 'cff-find-other-file)))
+    ;;(add-hook 'c-mode-hook
+    ;;   '(lambda ()
+    ;;       (define-key c-mode-base-map (kbd "C-S-o") 'cff-find-other-file)))
+
     )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -593,7 +610,7 @@ This function is called at the very end of Spacemacs initialization."
     ("/dhome/bpierce/shared/org/projects/voxflow.org" "/dhome/bpierce/shared/org/emacs-todo.org")))
  '(package-selected-packages
    (quote
-    (dired+ xterm-color unfill smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (yaml-mode xterm-color unfill smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

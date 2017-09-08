@@ -3,7 +3,6 @@
 ;; Copyright (C) 2015 by Bailey Ling
 ;; Author: Bailey Ling
 ;; URL: https://github.com/bling/fzf.el
-;; Package-Version: 20170527.2120
 ;; Filename: fzf.el
 ;; Description: A front-end for fzf
 ;; Created: 2015-09-18
@@ -38,8 +37,13 @@
 ;;
 ;; M-x fzf
 ;; M-x fzf-directory
+;; M-x fzf-git
+;; M-x fzf-hg
+;; M-x fzf-projectile
 ;;
 ;;; Code:
+
+(require 'subr-x)
 
 (defgroup fzf nil
   "Configuration options for fzf.el"
@@ -56,7 +60,7 @@
   :group 'fzf)
 
 (defcustom fzf/args "noreindex -x --color bw --print-query"
-  "Additional arguments to pass into fzf. (for basic, non-reindexing case)"
+  "Additional arguments to pass into fzf."
   :type 'string
   :group 'fzf)
 
@@ -68,6 +72,11 @@
 (defcustom fzf/position-bottom t
   "Set the position of the fzf window. Set to nil to position on top."
   :type 'bool
+  :group 'fzf)
+
+(defcustom fzf/directory-start nil
+  "The path of the default start directory for fzf-directory."
+  :type 'string
   :group 'fzf)
 
 (defun fzf/after-term-handle-exit (process-name msg)
@@ -96,7 +105,6 @@
       (make-term "fzf" fzf/executable))
     (switch-to-buffer buf)
     (linum-mode 0)
-    (set-window-margins nil 0)
 
     ;; disable various settings known to cause artifacts, see #1 for more details
     (setq-local scroll-margin 0)
@@ -107,33 +115,85 @@
     (term-char-mode)
     (setq mode-line-format (format "   FZF  %s" directory))))
 
+(defun fzf/vcs (args match)
+  (let ((path (locate-dominating-file default-directory match)))
+    (if path
+        (fzf/start args path)
+      (fzf-directory))))
+
 ;;;###autoload
 (defun fzf ()
   "Starts a fzf session."
   (interactive)
   (if (fboundp #'projectile-project-root)
-      (fzf/start fzf/args (condition-case err
+      (fzf/start (condition-case err
                      (projectile-project-root)
                    (error
                     default-directory)))
-    (fzf/start fzf/args default-directory)))
+    (fzf/start default-directory)))
 
 ;;;###autoload
-(defun fzf-reindex ()
-  "Starts a fzf session (forces reindexing)."
+(defun fzf-directory ()
+  "Starts a fzf session at the specified directory."
+  (interactive)
+  (fzf/start fzf/args (ido-read-directory-name "Directory: " fzf/directory-start)))
+
+;;;###autoload
+(defun fzf-git ()
+  "Starts a fzf session at the root of the current git."
+  (interactive)
+  (fzf/vcs fzf/args ".git"))
+
+;;;###autoload
+(defun fzf-hg ()
+  "Starts a fzf session at the root of the curreng hg."
+  (interactive)
+  (fzf/vcs fzf/args ".hg"))
+
+;;;###autoload
+(defun fzf-projectile ()
+  "Starts a fzf session at the root of the projectile project."
+  (interactive)
+  (require 'projectile)
+  (fzf/start fzf/args (projectile-project-root)))
+
+;; ----- reindex versions ------
+
+;;;###autoload
+(defun fzf-reindex-reindex ()
+  "Starts a fzf session."
   (interactive)
   (if (fboundp #'projectile-project-root)
-      (fzf/start fzf/args-reindex (condition-case err
+      (fzf/start (condition-case err
                      (projectile-project-root)
                    (error
                     default-directory)))
     (fzf/start fzf/args-reindex default-directory)))
 
 ;;;###autoload
-(defun fzf-directory (directory)
+(defun fzf-directory-reindex ()
   "Starts a fzf session at the specified directory."
-  (interactive "D")
-  (fzf/start fzf/args-reindex directory))
+  (interactive)
+  (fzf/start fzf/args-reindex (ido-read-directory-name "Directory: " fzf/directory-start)))
+
+;;;###autoload
+(defun fzf-git-reindex ()
+  "Starts a fzf session at the root of the current git."
+  (interactive)
+  (fzf/vcs fzf/args-reindex ".git"))
+
+;;;###autoload
+(defun fzf-hg-reindex ()
+  "Starts a fzf session at the root of the curreng hg."
+  (interactive)
+  (fzf/vcs fzf/args-reindex ".hg"))
+
+;;;###autoload
+(defun fzf-projectile-reindex ()
+  "Starts a fzf session at the root of the projectile project."
+  (interactive)
+  (require 'projectile)
+  (fzf/start fzf/args-reindex (projectile-project-root)))
 
 (provide 'fzf)
 ;;; fzf.el ends here
