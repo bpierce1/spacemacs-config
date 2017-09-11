@@ -30,8 +30,9 @@ values."
         dotspacemacs-configuration-layer-path '("~/.spacemacs.d/private")
         ;; List of configuration layers to load.
         dotspacemacs-configuration-layers
-        '(html
-          yaml
+        '(   html
+             yaml
+             gtags
              (python :variables python-enable-yapf-format-on-save t)
              ;; ----------------------------------------------------------------
              ;; Example of useful layers you may want to use right away.
@@ -39,12 +40,12 @@ values."
              ;; <M-m f e R> (Emacs style) to install them.
              ;; ----------------------------------------------------------------
              helm
-             ;;(auto-completion :variables
-             ;;    auto-completion-return-key-behavior 'complete
-             ;;    auto-completion-tab-key-behavior 'cycle
-             ;;    auto-completion-complete-with-key-sequence nil
-             ;;    auto-completion-complete-with-key-sequence-delay 2.0
-             ;;    auto-completion-private-snippets-directory nil)
+             (auto-completion :variables
+                 auto-completion-return-key-behavior 'complete
+                 auto-completion-tab-key-behavior 'cycle
+                 auto-completion-complete-with-key-sequence nil
+                 auto-completion-complete-with-key-sequence-delay 2.0
+                 auto-completion-private-snippets-directory nil)
              better-defaults
              emacs-lisp
              (c-c++ :variables
@@ -319,46 +320,40 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
     ;;(spaceline-toggle-projectile-root-on)
 
-    (defun set-indent (n)
+    (defun set-indent ()
         (setq-default
-            evil-shift-width n
-            tab-width n
-            default-tab-width n
-            standard-indent n
-            c-basic-offset n
-            js-indent-level n
-            js2-basic-offset n
-            javascript-indent-level n
-            css-indent-offset n
-            prolog-indent-width n
-            coffee-tab-width n
-            web-mode-markup-indent-offset n
-            web-mode-css-indent-offset n
-            web-mode-code-indent-offset n
-            web-mode-markup-indent-offset n
-            web-mode-css-indent-offset n
-            web-mode-code-indent-offset n
-            web-mode-attr-indent-offset n
-            python-indent-offset n
-            python-indent n
+            evil-shift-width 4
+            tab-width 4
+            default-tab-width 4
+            standard-indent 4
+            c-basic-offset 4
+            js-indent-level 2
+            js2-basic-offset 2
+            javascript-indent-level 2
+            css-indent-offset 2
+            prolog-indent-width 4
+            coffee-tab-width 2
+            web-mode-markup-indent-offset 2
+            web-mode-css-indent-offset 2
+            web-mode-code-indent-offset 2
+            web-mode-markup-indent-offset 2
+            web-mode-css-indent-offset 2
+            web-mode-code-indent-offset 2
+            web-mode-attr-indent-offset 2
+            python-indent-offset 4
+            python-indent 4
             ))
-    (set-indent 4)
-    (defun set-tab-width (n)
+    (set-indent)
+    (defun set-tab-width ()
         (dolist (var '(evil-shift-width
                           default-tab-width
                           tab-width
                           c-basic-offset
                           cmake-tab-width
-                          coffee-tab-width
                           cperl-indent-level
-                          css-indent-offset
                           elixir-smie-indent-basic
                           enh-ruby-indent-level
                           erlang-indent-level
-                          javascript-indent-level
-                          js-indent-level
-                          js2-basic-offset
-                          js3-indent-level
                           lisp-indent-offset
                           livescript-tab-width
                           mustache-basic-offset
@@ -370,13 +365,21 @@ before packages are loaded. If you are unsure, you should try in setting them in
                           rust-indent-offset
                           scala-indent:step
                           sgml-basic-offset
-                          sh-basic-offset
+                          sh-basic-offset))
+            (set (make-local-variable var) 4))
+        (dolist (var '(coffee-tab-width
+                          css-indent-offset
+                          javascript-indent-level
+                          js-indent-level
+                          js2-basic-offset
+                          js3-indent-level
                           web-mode-code-indent-offset
                           web-mode-css-indent-offset
                           web-mode-markup-indent-offset))
-            (set (make-local-variable var) n)))
-    (set-tab-width 4)
-    (add-hook 'python-mode-hook (lambda () (set-indent 4)))
+            (set (make-local-variable var) 2))
+        )
+    (set-tab-width)
+    (add-hook 'python-mode-hook (lambda () (set-indent)))
     )
 
 (defun dotspacemacs/user-config ()
@@ -515,7 +518,9 @@ you should place your code here."
     ;; autocomplete
     (add-hook 'company-mode-hook
         (lambda()
-            (define-key evil-insert-state-map (kbd "<tab>") 'company-complete)))
+            (define-key evil-insert-state-map (kbd "<tab>") 'company-complete)
+            (setq company-clang-executable '/usr/lib/ccache/clang-3.8)
+            ))
     (setq company-idle-delay nil)
 
     ;; Info mode
@@ -627,15 +632,9 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(evil-want-Y-yank-to-eol nil)
- (load-library "find-lisp")
- (if (eq system-type 'darwin)
-   (setq org-agenda-files (find-lisp-find-files "/dhome/bpierce/shared/org" "\.org$"))
-   (setq org-agenda-files (find-lisp-find-files "~/shared/org" "\.org$"))
- )
  '(package-selected-packages
    (quote
-    (web-mode tagedit slim-mode scss-mode sass-mode pug-mode less-css-mode impatient-mode simple-httpd helm-css-scss haml-mode emmet-mode company-web web-completion-data add-node-modules-path xterm-color unfill smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (helm-gtags ggtags company-web web-completion-data company-c-headers company-anaconda xterm-color unfill smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
