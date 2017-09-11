@@ -42,7 +42,7 @@ values."
              helm
              (auto-completion :variables
                  auto-completion-return-key-behavior 'complete
-                 auto-completion-tab-key-behavior 'cycle
+                 auto-completion-tab-key-behavior 'complete
                  auto-completion-complete-with-key-sequence nil
                  auto-completion-complete-with-key-sequence-delay 2.0
                  auto-completion-private-snippets-directory nil)
@@ -391,6 +391,9 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
     ;; mac keys
     (setq mac-command-modifier 'control)
+
+    ;; auto save
+    (setq auto-save-timeout 300)
 
     ;; tramp speedup
     (setq tramp-default-method "ssh")
