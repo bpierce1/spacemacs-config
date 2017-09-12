@@ -596,10 +596,10 @@ you should place your code here."
 
     ;; projectile
     (setq projectile-known-projects-file "~/.cache/projectile-bookmarks.eld")
-    (setq projectile-track-known-projects-automaticall nil)
+    (setq projectile-track-known-projects-automatically nil)
     (setq projectile-enable-caching t)
     ;;(setq projectile-file-exists-local-cache-expire (* 5 60))
-    (projectile-global-mode)
+    ;;(projectile-global-mode)
 
     ;; get help back
     (global-set-key (kbd "C-c h") help-map)
