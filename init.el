@@ -421,14 +421,20 @@ you should place your code here."
     ;; For C/c++
     (add-hook 'c++-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
 
-    ;;;; python-anaconda
-    ;;(add-hook 'python-mode-hook 'anaconda-mode)
-    ;;(add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+
+    (defun toggle-python-enable-yapf-format-on-save ()
+        "toggle python enable yapf format on save"
+        (interactive)
+        (if python-enable-yapf-format-on-save
+            (setq python-enable-yapf-format-on-save nil)
+            (setq python-enable-yapf-format-on-save t)))
 
     ;; evil config
     (define-key evil-normal-state-map (kbd "C-i") nil)
     (define-key evil-normal-state-map (kbd "C-o") nil)
-    (define-key evil-insert-state-map (kbd "C-S-V") 'yank) ;; paste with ctrl-shift-v
+    (define-key evil-normal-state-map (kbd "C-M-y") 'toggle-python-enable-yapf-format-on-save)
+    (define-key evil-insert-state-map (kbd "C-S-v") 'yank) ;; paste with ctrl-shift-v
+    (define-key evil-normal-state-map (kbd "C-S-v") 'yank) ;; paste with ctrl-shift-v
     (define-key evil-normal-state-map (kbd "C-S-P") 'projectile-switch-project)
     (define-key evil-normal-state-map (kbd "M-[") 'projectile-add-known-project)
     (define-key evil-normal-state-map (kbd "C-{") 'helm-projectile-ag)
@@ -457,11 +463,13 @@ you should place your code here."
     (define-key evil-insert-state-map (kbd "C-<") 'python-indent-shift-left)
     (define-key evil-insert-state-map (kbd "C-`") 'other-frame)
     (define-key evil-normal-state-map (kbd "C-n") 'neotree-toggle)
-    (define-key evil-normal-state-map (kbd "C-S-v") 'evil-window-vsplit)
+    (define-key evil-normal-state-map (kbd "C-S-z") 'evil-window-vsplit)
+    (define-key evil-visual-state-map (kbd "C-S-c") 'ns-copy-including-secondary)
     (define-key evil-normal-state-map (kbd "C-S-b") 'kill-this-buffer)
 
     ;; for some reason have to repeat these... :(
-    (define-key evil-insert-state-map (kbd "C-S-V") 'yank) ;; paste with ctrl-shift-v
+    (global-set-key (kbd "C-M-y") 'toggle-python-enable-yapf-format-on-save)
+    (global-set-key (kbd "C-S-v") 'yank) ;; paste with ctrl-shift-v
     (global-set-key (kbd "C-S-P") 'projectile-switch-project)
     (global-set-key (kbd "M-[") 'projectile-add-known-project)
     (global-set-key (kbd "C-{") 'helm-projectile-ag)
@@ -487,7 +495,7 @@ you should place your code here."
     (global-set-key (kbd "C-<") 'python-indent-shift-left)
     (global-set-key (kbd "C-`") 'other-frame)
     (global-set-key (kbd "C-n") 'neotree-toggle)
-    (global-set-key (kbd "C-S-v") 'evil-window-vsplit)
+    (global-set-key (kbd "C-S-z") 'evil-window-vsplit)
     (global-set-key (kbd "C-S-b") 'kill-this-buffer)
 
     (with-eval-after-load 'org
