@@ -426,17 +426,21 @@ you should place your code here."
     (add-hook 'c++-mode-hook #'(lambda () (modify-syntax-entry ?_ "w")))
 
 
-    (defun toggle-python-enable-yapf-format-on-save ()
+    (defun toggle-yapf-on-save ()
         "toggle python enable yapf format on save"
         (interactive)
         (if python-enable-yapf-format-on-save
-            (setq python-enable-yapf-format-on-save nil)
-            (setq python-enable-yapf-format-on-save t)))
+            (progn
+                (remove-hook 'before-save-hook 'yapfify-non-interactive t)
+                (setq python-enable-yapf-format-on-save nil))
+            (progn
+                (add-hook 'before-save-hook 'yapfify-non-interactive nil t)
+                (setq python-enable-yapf-format-on-save t))))
 
     ;; evil config
     (define-key evil-normal-state-map (kbd "C-i") nil)
     (define-key evil-normal-state-map (kbd "C-o") nil)
-    (define-key evil-normal-state-map (kbd "C-M-y") 'toggle-python-enable-yapf-format-on-save)
+    (define-key evil-normal-state-map (kbd "C-M-y") 'toggle-yapf-on-save)
     (define-key evil-insert-state-map (kbd "C-S-v") 'yank) ;; paste with ctrl-shift-v
     (define-key evil-normal-state-map (kbd "C-S-v") 'yank) ;; paste with ctrl-shift-v
     (define-key evil-normal-state-map (kbd "C-S-P") 'projectile-switch-project)
@@ -474,7 +478,7 @@ you should place your code here."
     (define-key evil-normal-state-map (kbd "C-M-\\") 'clang-format-buffer)
 
     ;; for some reason have to repeat these... :(
-    (global-set-key (kbd "C-M-y") 'toggle-python-enable-yapf-format-on-save)
+    (global-set-key (kbd "C-M-y") 'toggle-yapf-on-save)
     (global-set-key (kbd "C-S-v") 'yank) ;; paste with ctrl-shift-v
     (global-set-key (kbd "C-S-P") 'projectile-switch-project)
     (global-set-key (kbd "M-[") 'projectile-add-known-project)
