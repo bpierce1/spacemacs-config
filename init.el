@@ -453,7 +453,7 @@ you should place your code here."
     ;;(define-key evil-normal-state-map (kbd "C-p") 'fzf-git)
     ;;(define-key evil-normal-state-map (kbd "M-p") 'fzf-git-reindex)
     (define-key evil-normal-state-map (kbd "C-'") 'helm-recentf)
-    (define-key evil-normal-state-map (kbd "C-;") 'helm-buffers-list)
+    (define-key evil-normal-state-map (kbd "C-;") 'helm-mini)
     (define-key evil-normal-state-map (kbd "<C-i>") 'eyebrowse-prev-window-config)
     (define-key evil-normal-state-map (kbd "C-o") 'eyebrowse-next-window-config)
     (define-key evil-normal-state-map (kbd "C-S-T") 'eyebrowse-create-window-config)
@@ -490,7 +490,7 @@ you should place your code here."
     ;;(global-set-key (kbd "C-p") 'fzf-git)
     ;;(global-set-key (kbd "M-p") 'fzf-git-reindex)
     (global-set-key (kbd "C-'") 'helm-recentf)
-    (global-set-key (kbd "C-;") 'helm-buffers-list)
+    (global-set-key (kbd "C-;") 'helm-mini)
     (global-set-key (kbd "<C-i>") 'eyebrowse-prev-window-config)
     (global-set-key (kbd "C-o") 'eyebrowse-next-window-config)
     (global-set-key (kbd "C-S-T") 'eyebrowse-create-window-config)
@@ -540,7 +540,8 @@ you should place your code here."
         (add-to-list 'helm-boring-buffer-regexp-list "\*scratch\*")
         (add-to-list 'helm-boring-buffer-regexp-list "\*Messages\*")
         (add-to-list 'helm-boring-buffer-regexp-list "\*spacemacs\*")
-        (add-to-list 'helm-boring-buffer-regexp-list "GNU Emacs"))
+        (add-to-list 'helm-boring-buffer-regexp-list "GNU Emacs")
+        (setq helm-buffer-skip-remote-checking t))
 
     ;;(defalias 'e 'helm-find-files)
 
