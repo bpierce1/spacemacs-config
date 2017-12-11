@@ -189,7 +189,7 @@ values."
         dotspacemacs-default-layout-name "Default"
         ;; If non nil the default layout name is displayed in the mode-line.
         ;; (default nil)
-        dotspacemacs-display-default-layout nil
+        dotspacemacs-display-default-layout t
         ;; If non nil then the last auto saved layouts are resume automatically upon
         ;; start. (default nil)
         dotspacemacs-auto-resume-layouts nil
@@ -402,6 +402,8 @@ you should place your code here."
 
     ;; tramp speedup
     (setq tramp-default-method "ssh")
+    (setq tramp-auto-save-directory "/tmp/tramp-auto-save")
+    ;;(setq tramp-verbose 6)
 
     ;; unicode can cause freeze
     (setq dotspacemacs-mode-line-unicode-symbols nil)
@@ -549,7 +551,8 @@ you should place your code here."
     (add-hook 'company-mode-hook
         (lambda()
             (define-key evil-insert-state-map (kbd "<tab>") 'company-complete)
-            (setq company-clang-executable '/usr/lib/ccache/clang-3.8)
+            (if (eq system-type 'darwin) (setq company-clang-executable '/usr/bin/clang))
+            (if (eq system-type 'gnu/linux) (setq company-clang-executable '/usr/bin/clang-3.8))
             ))
     (setq company-idle-delay nil)
 
@@ -614,9 +617,9 @@ you should place your code here."
 
 
     ;; projectile
-    (setq projectile-known-projects-file "~/.cache/projectile-bookmarks.eld")
-    (setq projectile-track-known-projects-automatically nil)
-    (setq projectile-enable-caching t)
+    ; (setq projectile-known-projects-file "~/.cache/projectile-bookmarks.eld")
+    ;; (setq projectile-track-known-projects-automatically t)
+    ;; (setq projectile-enable-caching t)
     ;;(setq projectile-file-exists-local-cache-expire (* 5 60))
     ;;(projectile-global-mode)
 
@@ -667,13 +670,9 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(helm-buffer-max-length 40)
- '(org-agenda-files
-   (quote
-    ("/dhome/bpierce/shared/org/projects/voxflow.org" "/dhome/bpierce/shared/org/projects/vis_tool.org" "/dhome/bpierce/shared/org/projects/open_doors.org" "/dhome/bpierce/shared/org/projects/notes.org" "/dhome/bpierce/shared/org/projects/misc.org" "/dhome/bpierce/shared/org/projects/metrics.org" "/dhome/bpierce/shared/org/projects/fpgas.org" "/dhome/bpierce/shared/org/emacs-todo.org" "/dhome/bpierce/shared/org/capture.org")))
  '(package-selected-packages
    (quote
-    (yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode anaconda-mode pythonic company-anaconda web-beautify livid-mode skewer-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern dash-functional tern coffee-mode add-node-modules-path xterm-color unfill smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (yapfify yaml-mode web-mode web-beautify tagedit symon string-inflection slim-mode scss-mode sass-mode ripgrep realgud test-simple loc-changes load-relative pyvenv pytest pyenv-mode py-isort pug-mode pip-requirements password-generator org-brain livid-mode skewer-mode live-py-mode less-css-mode json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc impatient-mode simple-httpd hy-mode helm-pydoc helm-purpose window-purpose imenu-list helm-gtags helm-css-scss haml-mode ggtags evil-org evil-lion emmet-mode editorconfig disaster dired+ cython-mode company-web web-completion-data company-tern dash-functional tern company-c-headers company-anaconda coffee-mode cmake-mode cmake-ide levenshtein clang-format browse-at-remote anaconda-mode pythonic xterm-color unfill smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
