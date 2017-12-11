@@ -517,13 +517,6 @@ you should place your code here."
       (evil-define-key 'evilified org-mode-map (kbd "C-l") 'windmove-right))
 
     (load-library "find-lisp")
-    (with-eval-after-load 'org-agenda
-      (evil-define-key 'evilified org-agenda-mode-map (kbd "C-k") 'windmove-up)
-      (evil-define-key 'evilified org-agenda-mode-map (kbd "C-j") 'windmove-down)
-      (evil-define-key 'evilified org-agenda-mode-map (kbd "C-h") 'windmove-left)
-      (evil-define-key 'evilified org-agenda-mode-map (kbd "C-l") 'windmove-right)
-      (if (eq system-type 'darwin) (setq org-agenda-files (find-lisp-find-files "/dhome/bpierce/shared/org" "\.org$")))
-      (if (eq system-type 'gnu/linux) (setq org-agenda-files (find-lisp-find-files "~/shared/org" "\.org$"))))
 
     (with-eval-after-load 'neotree
       (evil-define-key 'evilified neotree-mode-map (kbd "C-n") 'neotree-toggle))
@@ -585,10 +578,18 @@ you should place your code here."
         (setq org-hide-emphasis-markers t)
         (org-indent-mode t)
         ;; laptop
-        (if (eq system-type 'darwin) (setq org-directory "/dhome/bpierce/shared/org"))
+        (if (eq system-type 'darwin) (setq org-directory "/home/bpierce/shared/org"))
         (if (eq system-type 'gnu/linux) (setq org-directory "~/shared/org"))
 
         (setq org-default-notes-file (concat org-directory "/capture.org")))
+
+    (with-eval-after-load 'org-agenda
+      (evil-define-key 'evilified org-agenda-mode-map (kbd "C-k") 'windmove-up)
+      (evil-define-key 'evilified org-agenda-mode-map (kbd "C-j") 'windmove-down)
+      (evil-define-key 'evilified org-agenda-mode-map (kbd "C-h") 'windmove-left)
+      (evil-define-key 'evilified org-agenda-mode-map (kbd "C-l") 'windmove-right)
+      (if (eq system-type 'darwin) (setq org-agenda-files (find-lisp-find-files "/home/bpierce/shared/org" "\.org$")))
+      (if (eq system-type 'gnu/linux) (setq org-agenda-files (find-lisp-find-files "~/shared/org" "\.org$"))))
 
     (with-eval-after-load 'evil-org
         ;; zoom/unzoom
