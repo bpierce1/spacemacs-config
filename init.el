@@ -545,7 +545,7 @@ you should place your code here."
         (lambda()
             (define-key evil-insert-state-map (kbd "<tab>") 'company-complete)
             (if (eq system-type 'darwin) (setq company-clang-executable '/usr/bin/clang))
-            (if (eq system-type 'gnu/linux) (setq company-clang-executable '/usr/bin/clang-3.8))
+            (if (eq system-type 'gnu/linux) (setq company-clang-executable '/usr/lib/ccache/clang-3.8))
             ))
     (setq company-idle-delay nil)
 
