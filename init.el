@@ -439,6 +439,18 @@ you should place your code here."
                 (add-hook 'before-save-hook 'yapfify-non-interactive nil t)
                 (setq python-enable-yapf-format-on-save t))))
 
+    (defun clang-format-buffer-smart ()
+        "Reformat buffer if .clang-format exists in the projectile root."
+        (when (f-exists? (expand-file-name ".clang-format" (projectile-project-root)))
+            (clang-format-buffer)))
+
+    (defun clang-format-buffer-smart-on-save ()
+        "Add auto-save hook for clang-format-buffer-smart."
+        (add-hook 'before-save-hook 'clang-format-buffer-smart nil t))
+
+    (spacemacs/add-to-hooks 'clang-format-buffer-smart-on-save
+        '(c-mode-hook c++-mode-hook))
+
     ;; evil config
     (define-key evil-normal-state-map (kbd "C-i") nil)
     (define-key evil-normal-state-map (kbd "C-o") nil)
@@ -620,8 +632,8 @@ you should place your code here."
     ;; projectile
     ; (setq projectile-known-projects-file "~/.cache/projectile-bookmarks.eld")
     ;; (setq projectile-track-known-projects-automatically t)
-    ;; (setq projectile-enable-caching t)
-    ;;(setq projectile-file-exists-local-cache-expire (* 5 60))
+    (setq projectile-enable-caching t)
+    (setq projectile-file-exists-local-cache-expire (* 5 60))
     ;;(projectile-global-mode)
 
     ;; get help back
