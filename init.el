@@ -390,6 +390,14 @@ before packages are loaded. If you are unsure, you should try in setting them in
         )
     (set-tab-width)
     (add-hook 'python-mode-hook (lambda () (set-indent)))
+
+    ;; shortcut for creating new frame
+    (defun lunaryorn-new-buffer-frame ()
+        "Create a new frame with a new empty buffer."
+        (interactive)
+        (let ((buffer (generate-new-buffer "untitled")))
+            (set-buffer-major-mode buffer)
+            (display-buffer buffer '(display-buffer-pop-up-frame . nil))))
     )
 
 (defun dotspacemacs/user-config ()
@@ -401,6 +409,9 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
     ;; mac keys
     (setq mac-command-modifier 'control)
+
+    ;; shortcut for creating new frame
+    ;; (global-set-key (kbd "SPC f n") 'lunaryorn-new-buffer-frame)
 
     ;; editor config
     (editorconfig-mode 1)
@@ -605,6 +616,7 @@ you should place your code here."
         (if (eq system-type 'darwin) (setq org-directory "/home/bpierce/shared/org"))
         (if (eq system-type 'gnu/linux) (setq org-directory "~/shared/org"))
 
+        (setq org-agenda-window-setup 'current-window)
         (setq org-default-notes-file (concat org-directory "/capture.org")))
 
     (with-eval-after-load 'org-agenda
