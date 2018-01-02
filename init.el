@@ -401,16 +401,26 @@ before packages are loaded. If you are unsure, you should try in setting them in
 
 
     ;;(setq my-helm-rg-command "rg --color=never --smart-case --no-heading") ;; doesn't work right now :(
-    (setq my-helm-rg-command "rg --color=always --colors 'match:fg:black' --colors 'match:bg:yellow' --smart-case --no-heading --line-number %s %s %s")
+    (setq my-helm-rg-command "rg --color=always --colors 'match:fg:black' --colors 'match:bg:yellow' --smart-case --no-heading")
     ;; (setq my-helm-rg-command "rg --vimgrep --no-heading")
     (defun my-helm-rg (&optional options)
       "Helm version of projectile-ag."
-      (interactive (if current-prefix-arg (list (helm-read-string "option: " "" 'helm-ag--extra-options-history))))
-      (let* (
-             (helm-ag-command-option options)
-             (my-helm-rg-command (concat my-helm-rg-command " "))
-             (current-prefix-arg nil))
-        (helm-do-ag (projectile-project-root) (car (projectile-parse-dirconfig-file)))))
+      (interactive (if current-prefix-arg (list (read-string "option: " "" 'helm-ag--extra-options-history))))
+      (if (require 'helm-ag nil  'noerror)
+          (if (projectile-project-p)
+              (let ((helm-ag-command-option options)
+                    (current-prefix-arg nil))
+                (helm-do-ag (projectile-project-root) (car (projectile-parse-dirconfig-file))))
+            (error "You're not in a project"))
+        (error "helm-ag not available")))
+    ;; (defun my-helm-rg (&optional options)
+    ;;   "Helm version of projectile-ag."
+    ;;   (interactive (if current-prefix-arg (list (helm-read-string "option: " "" 'helm-ag--extra-options-history))))
+    ;;   (let* (
+    ;;          (helm-ag-command-option options)
+    ;;          (my-helm-rg-command (concat my-helm-rg-command " "))
+    ;;          (current-prefix-arg nil))
+    ;;     (helm-do-ag (projectile-project-root) (car (projectile-parse-dirconfig-file)))))
     )
 
 (defun dotspacemacs/user-config ()
