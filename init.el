@@ -674,7 +674,7 @@ you should place your code here."
         ;; fix tab
         (define-key evil-org-mode-map (kbd "<normal-state> C-y") 'yank))
 
-
+    (if (eq system-type 'darwin) (setq helm-ag-base-command "ag --nocolor --nogroup --mmap"))
 
     ;; projectile
     ; (setq projectile-known-projects-file "~/.cache/projectile-bookmarks.eld")
