@@ -503,9 +503,8 @@ you should place your code here."
     (define-key evil-normal-state-map (kbd "C-S-P") 'projectile-switch-project)
     (define-key evil-normal-state-map (kbd "M-[") 'projectile-add-known-project)
     (define-key evil-normal-state-map (kbd "C-{") 'my-helm-rg)
-    (define-key evil-normal-state-map (kbd "C-}") 'helm-projectile-ag)
-    (define-key evil-normal-state-map (kbd "C-S-I") 'projectile-find-other-file)
-    (define-key evil-normal-state-map (kbd "C-S-O") 'projectile-find-other-file)
+    ;; (define-key evil-normal-state-map (kbd "C-}") 'helm-projectile-ag)
+    (define-key evil-normal-state-map (kbd "SPC o") 'projectile-find-other-file)
     (define-key evil-normal-state-map (kbd "C-p") 'projectile-find-file)
     (define-key evil-normal-state-map (kbd "M-p") 'projectile-invalidate-cache)
     ;;(define-key evil-normal-state-map (kbd "C-p") 'fzf-git)
@@ -539,6 +538,9 @@ you should place your code here."
     (define-key evil-visual-state-map (kbd "C-M-\\") 'clang-format-region)
     (define-key evil-normal-state-map (kbd "C-M-\\") 'clang-format-buffer)
     (define-key evil-normal-state-map (kbd "SPC f n") 'lunaryorn-new-buffer-frame)
+    (define-key evil-normal-state-map (kbd "C-t") 'helm-gtags-pop-stack)
+    (define-key evil-normal-state-map (kbd "C-]") 'helm-gtags-dwim)
+    (define-key evil-normal-state-map (kbd "C-}") 'helm-gtags-dwim-other-window)
 
     ;; for some reason have to repeat these... :(
     (global-set-key (kbd "C-M-y") 'toggle-yapf-on-save)
@@ -572,6 +574,9 @@ you should place your code here."
     (global-set-key (kbd "C-n") 'neotree-toggle)
     (global-set-key (kbd "C-S-z") 'evil-window-vsplit)
     (global-set-key (kbd "C-S-b") 'kill-this-buffer)
+    (global-set-key (kbd "C-t") 'helm-gtags-pop-stack)
+    (global-set-key (kbd "C-]") 'helm-gtags-dwim)
+    (global-set-key (kbd "C-}") 'helm-gtags-dwim-other-window)
 
     (with-eval-after-load 'org
       (evil-define-key 'evilified org-mode-map (kbd "C-k") 'windmove-up)
@@ -736,13 +741,9 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(evil-want-Y-yank-to-eol nil)
- '(org-agenda-files
-   (quote
-    ("/home/bpierce/shared/org/projects/misc.org" "/home/bpierce/shared/org/productivity.org" "/home/bpierce/shared/org/todo.org" "/home/bpierce/shared/org/projects/voxflow.org" "/home/bpierce/shared/org/projects/vision_voting_instrumentation.org" "/home/bpierce/shared/org/projects/vis_tool.org" "/home/bpierce/shared/org/projects/prediction-branch-differ.org" "/home/bpierce/shared/org/projects/open_doors.org" "/home/bpierce/shared/org/projects/ml-infra.org" "/home/bpierce/shared/org/projects/metrics.org" "/home/bpierce/shared/org/projects/fusion_classifier.org" "/home/bpierce/shared/org/projects/fpgas.org" "/home/bpierce/shared/org/notes/sagemaker.org" "/home/bpierce/shared/org/emacs-todo.org" "/home/bpierce/shared/org/capture.org")))
  '(package-selected-packages
    (quote
-    (overseer nameless xterm-color unfill smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (flycheck-irony company-irony irony cmake-mode xterm-color unfill smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit magit-popup git-commit with-editor eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
