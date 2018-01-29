@@ -227,7 +227,7 @@ values."
    ;; in all non-asynchronous sources. If set to `source', preserve individual
    ;; source settings. Else, disable fuzzy matching in all sources.
    ;; (default 'always)
-   dotspacemacs-helm-use-fuzzy 'source
+   dotspacemacs-helm-use-fuzzy 'always
    ;; If non nil the paste micro-state is enabled. When enabled pressing `p`
    ;; several times cycle between the kill ring content. (default nil)
    dotspacemacs-enable-paste-transient-state nil
@@ -435,8 +435,8 @@ you should place your code here."
   ;; mac keys
   (setq mac-command-modifier 'control)
 
-  ;; golden ratio for better windows
-  (golden-ratio-mode)
+  ;; ;; golden ratio for better windows (messes up windws in split)
+  ;; (golden-ratio-mode)
 
   ;; disable smart parens (except for {})
   (eval-after-load 'smartparens
