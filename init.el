@@ -518,7 +518,8 @@ you should place your code here."
   (define-key evil-normal-state-map (kbd "C-S-v") 'yank) ;; paste with ctrl-shift-v
   (define-key evil-normal-state-map (kbd "C-S-P") 'projectile-switch-project)
   (define-key evil-normal-state-map (kbd "M-[") 'projectile-add-known-project)
-  (define-key evil-normal-state-map (kbd "C-{") 'my-helm-rg)
+  (define-key evil-normal-state-map (kbd "C-f") 'my-helm-rg)
+  (define-key evil-visual-state-map (kbd "C-f") 'my-helm-rg)
   ;; (define-key evil-normal-state-map (kbd "C-}") 'helm-projectile-ag)
   (define-key evil-normal-state-map (kbd "SPC o") 'projectile-find-other-file)
   (define-key evil-normal-state-map (kbd "C-p") 'projectile-find-file)
@@ -526,7 +527,7 @@ you should place your code here."
   ;;(define-key evil-normal-state-map (kbd "C-p") 'fzf-git)
   ;;(define-key evil-normal-state-map (kbd "M-p") 'fzf-git-reindex)
   (define-key evil-normal-state-map (kbd "C-'") 'helm-recentf)
-  (define-key evil-normal-state-map (kbd "C-;") 'helm-mini)
+  (define-key evil-normal-state-map (kbd "SPC ;") 'helm-mini)
   (define-key evil-normal-state-map (kbd "<C-i>") 'eyebrowse-prev-window-config)
   (define-key evil-normal-state-map (kbd "C-o") 'eyebrowse-next-window-config)
   (define-key evil-normal-state-map (kbd "C-S-i") 'persp-prev)
@@ -540,8 +541,8 @@ you should place your code here."
   (define-key evil-normal-state-map (kbd "C-j") 'windmove-down)
   (define-key evil-normal-state-map (kbd "C-h") 'windmove-left)
   (define-key evil-normal-state-map (kbd "C-l") 'windmove-right)
-  (define-key evil-normal-state-map (kbd "C-f") 'helm-find-files)
-  (define-key evil-motion-state-map (kbd "C-f") 'helm-find-files)
+  (define-key evil-normal-state-map (kbd "C-S-f") 'helm-find-files)
+  (define-key evil-motion-state-map (kbd "C-S-f") 'helm-find-files)
   (define-key evil-normal-state-map (kbd "C-.") 'python-indent-shift-right)
   (define-key evil-normal-state-map (kbd "C-<") 'python-indent-shift-left)
   (define-key evil-insert-state-map (kbd "C-.") 'python-indent-shift-right)
@@ -564,7 +565,7 @@ you should place your code here."
   (global-set-key (kbd "C-S-v") 'yank) ;; paste with ctrl-shift-v
   (global-set-key (kbd "C-S-P") 'projectile-switch-project)
   (global-set-key (kbd "M-[") 'projectile-add-known-project)
-  (global-set-key (kbd "C-{") 'helm-projectile-ag)
+  (global-set-key (kbd "C-f") 'helm-projectile-ag)
   (global-set-key (kbd "C-S-I") 'projectile-find-other-file)
   (global-set-key (kbd "C-S-O") 'projectile-find-other-file)
   (global-set-key (kbd "C-p") 'projectile-find-file)
@@ -704,6 +705,8 @@ you should place your code here."
     (define-key evil-org-mode-map (kbd "<normal-state> T") 'org-shiftleft)
     ;; fix tab
     (define-key evil-org-mode-map (kbd "<normal-state> C-y") 'yank))
+
+  (setq org-src-fontify-natively t)
 
   (if (eq system-type 'darwin) (setq helm-ag-base-command "ag --nocolor --nogroup --mmap"))
 
